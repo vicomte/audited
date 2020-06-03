@@ -24,7 +24,7 @@ module Audited
 
     def startup
       ::ActiveRecord::Base.send :include, Audited::Auditor
-      require sweeper_path
+      ::Audited::Sweeper.start_sweeper
     end
   end
 
@@ -36,4 +36,5 @@ end
 
 require 'audited/auditor'
 require 'audited/audit'
+require 'audited/sweeper'
 
