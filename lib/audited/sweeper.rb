@@ -1,6 +1,6 @@
 module Audited
   class Sweeper
-    @stored_data = {
+    @@stored_data = {
       current_remote_address: :remote_ip,
       current_request_uuid: :request_uuid,
       current_user: :current_user
@@ -10,11 +10,11 @@ module Audited
 
     def around(controller)
       self.controller = controller
-      @stored_data.each { |k,m| store[k] = send(m) }
+      @@stored_data.each { |k,m| store[k] = send(m) }
       yield
     ensure
       self.controller = nil
-      @stored_data.keys.each { |k| store.delete(k) }
+      @@stored_data.keys.each { |k| store.delete(k) }
     end
 
     def current_user
