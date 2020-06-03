@@ -37,7 +37,7 @@ module Audited
       store[:current_controller] = value
     end
 
-    def start_sweeper
+    def self.start_sweeper
       ActiveSupport.on_load(:action_controller) do
         if defined?(ActionController::Base)
           ActionController::Base.around_action Audited::Sweeper.new
