@@ -4,9 +4,14 @@ module Audited
   class << self
     attr_accessor :ignored_attributes, :current_user_method, :max_audits, :auditing_enabled
     attr_writer :audit_class
+    attr_writer :sweeper_path
 
     def audit_class
       @audit_class ||= Audit
+    end
+
+    def sweeper_path
+      @sweeper_class ||= 'audited/sweeper'
     end
 
     def store
@@ -15,6 +20,11 @@ module Audited
 
     def config
       yield(self)
+    end
+
+    def startup
+      ::ActiveRecord::Base.send :include, Audited::Auditor
+      require sweeper_path
     end
   end
 
@@ -27,6 +37,3 @@ end
 require 'audited/auditor'
 require 'audited/audit'
 
-::ActiveRecord::Base.send :include, Audited::Auditor
-
-require 'audited/sweeper'
