@@ -4,14 +4,9 @@ module Audited
   class << self
     attr_accessor :ignored_attributes, :current_user_method, :max_audits, :auditing_enabled
     attr_writer :audit_class
-    attr_writer :sweeper_path
 
     def audit_class
       @audit_class ||= Audit
-    end
-
-    def sweeper_path
-      @sweeper_class ||= 'audited/sweeper'
     end
 
     def store
